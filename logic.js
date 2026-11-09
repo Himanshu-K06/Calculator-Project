@@ -62,6 +62,7 @@ function updateDisplay2(){
         num1 = +result;
         operator = undefined;
         operator_flag = false;
+        // check all the values 
         console.table(num1,num2,operator,operator_flag,result,display1,display2);
     }
     else if(num1!==undefined && operator_flag){ 
@@ -148,7 +149,6 @@ function updateNumbers(digit){
         display1 = display1 + digit;
         num1 = +display1;
         // function call to display the display1 value in the display1 as current number
-        console.log(num1);
         updateDisplay1()
     }
     else{
@@ -165,7 +165,12 @@ function updateNumbers(digit){
 }
 
 function updateOperator(op){
-    if(num2===undefined){
+    // trying to enter negative number as num1 and add irresponsiveness to other operators being pressed before num1
+    if(num1===undefined && op==="-"){
+        display1 = "-";
+        firstDisplay.textContent=display1;
+    }
+    else if(num2===undefined){
         operator = op;
         operator_flag = true;
         updateDisplay2();
@@ -201,7 +206,7 @@ numberList.forEach((currNumber) =>{
     });
 });
 
-// ----------- operations --------------- store and add event listener
+// ----------- operators --------------- store and add event listener
 let operatorList = document.querySelectorAll(".operator");
 operatorList.forEach((currOperator)=>{
     currOperator.addEventListener('click', ()=>{
