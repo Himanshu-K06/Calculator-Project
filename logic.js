@@ -9,27 +9,22 @@ let resultShowed = false;
 
 // addition
 function add(num_1,num_2){
-    console.log(num_1+num_2);
     return num_1+num_2;
 }
 // subtraction
 function sub(num1,num2){
-    console.log(num1-num2);
     return num1-num2;
 }
 // multiply
 function multiply(num1,num2){
-    console.log(num1*num2);
     return num1*num2;
 }
 // division
 function divide(num1,num2){
     if(num2===0){
-        console.log("ERROR: Division by 0");
         return "ERROR";
     } 
     else {
-        console.log(num1/num2);
         return num1/num2;
     }
 }
@@ -63,6 +58,11 @@ function updateDisplay2(){
         display2 = `${num1} ${operator} ${num2} = `;
         display1 = `${result}`;
         firstDisplay.textContent = display1;
+        num2 = undefined;
+        num1 = +result;
+        operator = undefined;
+        operator_flag = false;
+        console.table(num1,num2,operator,operator_flag,result,display1,display2);
     }
     else if(num1!==undefined && operator_flag){ 
 // this has to come after the second case because if i put this before case 2 then case 2 will never execute  
@@ -83,7 +83,6 @@ function enterPressed(){
     // num1 , num2, operator -- all entered and then equals to
         operation(num1,num2,operator);
         updateDisplay2();
-        operator_flag = false;
         resultShowed = true;
     }   
     else if(num1!==undefined && operator_flag){
