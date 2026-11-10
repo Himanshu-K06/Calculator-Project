@@ -36,7 +36,7 @@ function operation(first,second,op){
     else if(op==='/'){
         result = divide(first,second);
         let temp = `${result}`;
-        if(temp.length>4){
+        if(temp.length>4 && result!=="ERROR"){
             result = result.toFixed(4);
         }
     } 
@@ -71,7 +71,7 @@ function updateDisplay2(){
         // check all the values 
         console.table(num1,num2,operator,operator_flag,result,display1,display2);
     }
-    else if(num1!==undefined && operator_flag){ 
+    else if(num1!==undefined && operator_flag){ // result is showed and now i clicked on anohter opertor to chain the operation using previous result
 // this has to come after the second case because if i put this before case 2 then case 2 will never execute  
         display2 = `${num1} ${operator} `;   // case 3 num1 entered, operator selected and num2 is being given in input
     }
@@ -150,7 +150,13 @@ function clear(){
 // function to update numbers, both num1 AND num2
 function updateNumbers(digit){
     // what happens if there is a negative sign before the number
-    if(!operator_flag){  // operator not selected, means input is for num1
+    if(resultShowed){  // && !operator_flag
+        clear();
+        display1 = digit;
+        num1 = +digit;
+        updateDisplay1();
+    }
+    else if(!operator_flag){  // operator not selected, means input is for num1
         if(display1 === "0") display1 = ""; // remove zero otherwise it will get in front of number string
         display1 = display1 + digit;
         num1 = +display1;
@@ -176,20 +182,18 @@ function updateOperator(op){
         display1 = "-";
         firstDisplay.textContent=display1;
     }
-    else if(num2===undefined){
-        operator = op;
-        operator_flag = true;
-        updateDisplay2();
-        console.log(`${operator} operator is selected`);
-    }
     else if(resultShowed){
-        num1 = +result;
-        num2 = undefined;
         result = undefined;
         operator = op;
         operator_flag = true;
         updateDisplay2();
         resultShowed = false;
+    }
+    else if(num2===undefined){
+        operator = op;
+        operator_flag = true;
+        updateDisplay2();
+        console.log(`${operator} operator is selected`);
     }
 }
 
