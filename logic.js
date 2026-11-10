@@ -33,7 +33,13 @@ function operation(first,second,op){
     if(op==='+') result = add(first,second);
     else if(op==='-') result = sub(first,second);
     else if(op==='x') result = multiply(first,second);
-    else if(op==='/') result = divide(first,second);
+    else if(op==='/'){
+        result = divide(first,second);
+        let temp = `${result}`;
+        if(temp.length>4){
+            result = result.toFixed(4);
+        }
+    } 
 }
 
 // -------- display -----------
@@ -187,8 +193,6 @@ function updateOperator(op){
     }
 }
 
-// function for entering or for "=" to show the result of the final output,---- call the operation function which updates the display and shows the answer
-
 
 // select elements ------------------------------------------:
 // -------- clear and backspace ------------
@@ -225,9 +229,6 @@ equalsTo.addEventListener('click',enterPressed);
 /*
     THINGS TO THINK THROUGH AND SOLVE  ---------------------------------------------------------
 
-- what happens when the operator is given as input but then i press backspace, and then the operator should be cleared and the flag should be made false    
-- what happens when i backspace the number soo much it becomes zero again
-- when the operation function should be called ? -- called when i press the enter and then it calls the respective operation function and then shows the result in display1 
 - error handling - divide by infinity
 - what happens when i perform an operation , press enter, the result and whole operation is shown and then i click on numbers for a new operation - display1 and display 2 should become clear
 - after performing an operaion, i get result and then i press new operator, the display2 updates to "result operator", the display1 should remain at the previous result and changed only when i click on any new number digits.
