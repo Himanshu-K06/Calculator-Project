@@ -229,12 +229,3 @@ equalsTo.addEventListener('click',enterPressed);
 // add event listener to decimal
 
 
-
-/*
-    THINGS TO THINK THROUGH AND SOLVE  ---------------------------------------------------------
-
-- error handling - divide by infinity
-- what happens when i perform an operation , press enter, the result and whole operation is shown and then i click on numbers for a new operation - display1 and display 2 should become clear
-- after performing an operaion, i get result and then i press new operator, the display2 updates to "result operator", the display1 should remain at the previous result and changed only when i click on any new number digits.
-
-*/
