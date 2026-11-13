@@ -137,7 +137,7 @@ function removeLast(){
             }
         }
     }
-    
+
 }
 
 // function to clear everything
@@ -157,9 +157,10 @@ function clear(){
 
 // function to update numbers, both num1 AND num2
 function updateNumbers(digit){
-    if(!errorFlag){
     // what happens if there is a negative sign before the number
-        if(resultShowed){  // && !operator_flag
+        if(resultShowed || errorFlag){  
+// if the result is showed and i press on any number but no operator before it - start a new operation
+// if the previous calculation was an error and i press a number, clear everything & start new calculation
             clear();
             display1 = digit;
             num1 = +digit;
@@ -183,7 +184,6 @@ function updateNumbers(digit){
             num2 = +display1;
             updateDisplay1();
         }
-    }
 }
 
 function updateOperator(op){
