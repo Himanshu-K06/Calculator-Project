@@ -188,13 +188,9 @@ function updateNumbers(digit){
 
 function updateOperator(op){
 // if prev operation produced no error, only then proceed
-    if(!errorFlag){
+    if(!errorFlag && num1!==undefined){
         // trying to enter negative number as num1 and add irresponsiveness to other operators being pressed before num1
-        if(num1===undefined && op==="-"){
-            display1 = "-";
-            firstDisplay.textContent=display1;
-        }
-        else if(resultShowed){
+        if(resultShowed){
             result = undefined;
             operator = op;
             operator_flag = true;
