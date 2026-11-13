@@ -1,7 +1,10 @@
+body {
+  font-family: "Share Tech Mono", monospace;
+}
+
 .decoy_body{
     display: flex;
     justify-content: center;
-    /* height: 650px; */
 }
 
 .calculator_body{
@@ -13,6 +16,7 @@
     height: 550px;
     margin-top: 40px;
     padding: 20px;
+    font-family: "Share Tech Mono", monospace;
 }
 
 .display{
@@ -48,6 +52,10 @@
     flex-grow: 1;
     margin: 16px 0px 15px 0px;
     justify-content: space-between;
+}
+
+button{
+    font-family: "Share Tech Mono", monospace;
 }
 
 .special_buttons button{
