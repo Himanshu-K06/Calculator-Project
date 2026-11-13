@@ -6,6 +6,7 @@ let operator = undefined;
 let operator_flag = false;
 let result = undefined;
 let resultShowed = false;
+let errorFlag = false;
 
 // addition
 function add(num_1,num_2){
@@ -37,8 +38,9 @@ function operation(first,second,op){
         result = divide(first,second);
         let temp = `${result}`;
         if(temp.length>4 && result!=="ERROR"){
-            result = result.toFixed(4);
+            result = +result.toFixed(4);
         }
+        if(result==="ERROR") errorFlag = true;
     } 
 }
 
@@ -80,57 +82,62 @@ function updateDisplay2(){
 
 // case 2 - when enter is pressed - show whole equation with "="
 function enterPressed(){
-    // if the user enters the second number as 0 explicitely or if he doesn't even add any number, just use 0 as the number
-    if(num1!==undefined && !operator_flag){  // num1 enter and then equals to
-        // firstDisplay shows the number as it is
-        updateDisplay2() // second display shows "num1 ="
-        resultShowed = true; 
-    } 
-    else if(num1!==undefined && num2!==undefined && operator_flag){ 
-    // num1 , num2, operator -- all entered and then equals to
-        operation(num1,num2,operator);
-        updateDisplay2();
-        resultShowed = true;
-    }   
-    else if(num1!==undefined && operator_flag){
-        updateDisplay2();
+    if(!errorFlag){
+        // if the user enters the second number as 0 explicitely or if he doesn't even add any number, just use 0 as the number
+        if(num1!==undefined && !operator_flag){  // num1 enter and then equals to
+            // firstDisplay shows the number as it is
+            updateDisplay2() // second display shows "num1 ="
+            resultShowed = true; 
+        } 
+        else if(num1!==undefined && num2!==undefined && operator_flag){ 
+        // num1 , num2, operator -- all entered and then equals to
+            operation(num1,num2,operator);
+            updateDisplay2();
+            resultShowed = true;
+        }   
+        else if(num1!==undefined && operator_flag){
+            updateDisplay2();
+        }
     }
 }
 
 // function to remove last input digit
 function removeLast(){
-    // remove nothing if the display1 is empty -- means there is no number entered and remove nothing 
-    // when the operator is given but the second number is not mentioned yet 
-    if((display1==="0") || (operator_flag && num2===undefined)){}
-    else{  // num1 is not undefined OR operator flag is true and num 2 is not zero
-        // change the display variable
-        let len = display1.length;
-        if(len>1){
-            if(num1<0 && len===2){  // negative single digit like : -5, when backspace clicked, should become 0 instead of removing 5 and leaving just "-"
-                display1="0";
-                num1=0;
-                updateDisplay1();
+    if(!errorFlag){
+        // remove nothing if the display1 is empty -- means there is no number entered and remove nothing 
+        // when the operator is given but the second number is not mentioned yet 
+        if((display1==="0") || (operator_flag && num2===undefined)){}
+        else{  // num1 is not undefined OR operator flag is true and num 2 is not zero
+            // change the display variable
+            let len = display1.length;
+            if(len>1){
+                if(num1<0 && len===2){  // negative single digit like : -5, when backspace clicked, should become 0 instead of removing 5 and leaving just "-"
+                    display1="0";
+                    num1=0;
+                    updateDisplay1();
+                }
+                else if(num2<0 && len===2){
+                    display1 = "0";
+                    num2=0;
+                    updateDisplay1();
+                }
+                else{
+                    display1 = display1.slice(0,len-1);
+                    updateDisplay1();
+                    // update num 1 and num2 accordingly
+                    if(operator_flag) num2 = +display1; 
+                    else num1 = +display1;
+                }
             }
-            else if(num2<0 && len===2){
+            else if(len===1){
                 display1 = "0";
-                num2=0;
+                if(operator_flag) num2 = 0; 
+                else num1 = 0;
                 updateDisplay1();
             }
-            else{
-                display1 = display1.slice(0,len-1);
-                updateDisplay1();
-                // update num 1 and num2 accordingly
-                if(operator_flag) num2 = +display1; 
-                else num1 = +display1;
-            }
-        }
-        else if(len===1){
-            display1 = "0";
-            if(operator_flag) num2 = 0; 
-            else num1 = 0;
-            updateDisplay1();
         }
     }
+    
 }
 
 // function to clear everything
@@ -145,55 +152,61 @@ function clear(){
     updateDisplay1();
     secondDisplay.textContent = "";
     resultShowed=false;
+    errorFlag = false;
 }
 
 // function to update numbers, both num1 AND num2
 function updateNumbers(digit){
+    if(!errorFlag){
     // what happens if there is a negative sign before the number
-    if(resultShowed){  // && !operator_flag
-        clear();
-        display1 = digit;
-        num1 = +digit;
-        updateDisplay1();
-    }
-    else if(!operator_flag){  // operator not selected, means input is for num1
-        if(display1 === "0") display1 = ""; // remove zero otherwise it will get in front of number string
-        display1 = display1 + digit;
-        num1 = +display1;
-        // function call to display the display1 value in the display1 as current number
-        updateDisplay1()
-    }
-    else{
-        // operator flag selected, means input is for num2, num2 will still be shown in display 1.
-        if(num2===undefined){
+        if(resultShowed){  // && !operator_flag
+            clear();
             display1 = digit;
+            num1 = +digit;
+            updateDisplay1();
+        }
+        else if(!operator_flag){  // operator not selected, means input is for num1
+            if(display1 === "0") display1 = ""; // remove zero otherwise it will get in front of number string
+            display1 = display1 + digit;
+            num1 = +display1;
+            // function call to display the display1 value in the display1 as current number
+            updateDisplay1()
         }
         else{
-            display1 = display1 + digit;
+            // operator flag selected, means input is for num2, num2 will still be shown in display 1.
+            if(num2===undefined){
+                display1 = digit;
+            }
+            else{
+                display1 = display1 + digit;
+            }
+            num2 = +display1;
+            updateDisplay1();
         }
-        num2 = +display1;
-        updateDisplay1();
     }
 }
 
 function updateOperator(op){
-    // trying to enter negative number as num1 and add irresponsiveness to other operators being pressed before num1
-    if(num1===undefined && op==="-"){
-        display1 = "-";
-        firstDisplay.textContent=display1;
-    }
-    else if(resultShowed){
-        result = undefined;
-        operator = op;
-        operator_flag = true;
-        updateDisplay2();
-        resultShowed = false;
-    }
-    else if(num2===undefined){
-        operator = op;
-        operator_flag = true;
-        updateDisplay2();
-        console.log(`${operator} operator is selected`);
+// if prev operation produced no error, only then proceed
+    if(!errorFlag){
+        // trying to enter negative number as num1 and add irresponsiveness to other operators being pressed before num1
+        if(num1===undefined && op==="-"){
+            display1 = "-";
+            firstDisplay.textContent=display1;
+        }
+        else if(resultShowed){
+            result = undefined;
+            operator = op;
+            operator_flag = true;
+            updateDisplay2();
+            resultShowed = false;
+        }
+        else if(num2===undefined){
+            operator = op;
+            operator_flag = true;
+            updateDisplay2();
+            console.log(`${operator} operator is selected`);
+        }
     }
 }
 
