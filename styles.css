@@ -1,6 +1,7 @@
-body{
+.decoy_body{
     display: flex;
     justify-content: center;
+    /* height: 650px; */
 }
 
 .calculator_body{
@@ -86,4 +87,22 @@ body{
     box-sizing: border-box;
     border-radius: 3px;
     font-size: 32.5px;
+}
+
+#footer{
+    display: flex;
+    margin-top: 62px;
+    font-size: 22.5px;
+    font-weight: 600;
+    justify-content: center;
+}
+
+#copyright_symbol{
+    margin: 0px 6px;
+    padding: 0px;
+}
+
+#githubLink{
+    text-decoration: none;
+    margin: 0px 6px;
 }
