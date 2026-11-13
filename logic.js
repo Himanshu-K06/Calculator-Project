@@ -34,14 +34,14 @@ function operation(first,second,op){
     if(op==='+') result = add(first,second);
     else if(op==='-') result = sub(first,second);
     else if(op==='x') result = multiply(first,second);
-    else if(op==='/'){
-        result = divide(first,second);
-        let temp = `${result}`;
-        if(temp.length>4 && result!=="ERROR"){
-            result = +result.toFixed(4);
-        }
-        if(result==="ERROR") errorFlag = true;
-    } 
+    else if(op==='/') result = divide(first,second);
+    // if after any operation, the output became too large,the trim it, because only the display1 string is trimmed, not the actual number stored in num1,2 or result
+    let temp = `${result}`;
+    if(temp.length>4 && result!=="ERROR"){
+        result = +result.toFixed(4);  // to fixed take number as i/p and returns a string
+// to fix only works on decimals, will not work on big numbers that don't have decimals, like 1988387185838, i need 'e' for them
+    }
+    if(result==="ERROR") errorFlag = true;
 }
 
 // -------- display -----------
@@ -144,7 +144,7 @@ function removeLast(){
 function clear(){
     num1 = undefined;
     num2 = undefined;
-    operator = "";
+    operator = undefined;
     operator_flag = false;
     display1 = "0";
     display2 = "";
@@ -206,6 +206,17 @@ function updateOperator(op){
             operator_flag = true;
             updateDisplay2();
             console.log(`${operator} operator is selected`);
+        }
+// after entering num1,op,num2 when i press any operator again, perform the previous calculation, use its result as num1,then use currently pressed opertor , update display 2, emtpy display1, make it like middle of entering operands like operand 1 is gained from result,op is also given in input and now enter num2 then press enter or just press another operator to update things - if = pressed, show final result and update displays, if another operator pressed, repeat the previous actions
+        else if(num1!==undefined && num2!==undefined && operator!==undefined){
+        // perform operation based on operator
+            operation(num1,num2,operator);
+            num1 = result;
+            num2 = undefined;
+            result = undefined;
+            operator = op;
+            updateDisplay2();
+            firstDisplay.textContent = "";
         }
     }
 }
