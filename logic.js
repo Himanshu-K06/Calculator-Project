@@ -7,6 +7,7 @@ let operator_flag = false;
 let result = undefined;
 let resultShowed = false;
 let errorFlag = false;
+let veryLargeResult = false;
 
 // addition
 function add(num_1,num_2){
@@ -48,7 +49,14 @@ function operation(first,second,op){
 // function to add exopnentiation to long numbers 
 function formatNumber(num){
 // if the absolute of number is bigger than 12 digits, then add exponent to string , limit decimal places to 5 digits only. if the absolute is less than 12, use it as it is
-    return (Math.abs(num)>1e11) ? num.toExponential(5) : String(num);
+    // return (Math.abs(num)>1e11) ? num.toExponential(5) : String(num);
+    if(Math.abs(num)>1e11){
+        veryLargeResult = true;
+        return num.toExponential(5);
+    }
+    else{
+        return String(num);
+    }
 }
 
 
@@ -112,40 +120,45 @@ function enterPressed(){
 // function to remove last input digit
 function removeLast(){
     if(!errorFlag){
+        if(veryLargeResult){
+            secondDisplay.textContent = "";
+            display2 = "";
+        }
+        else{ 
         // remove nothing if the display1 is empty -- means there is no number entered and remove nothing 
-        // when the operator is given but the second number is not mentioned yet 
-        if((display1==="0") || (operator_flag && num2===undefined)){}
-        else{  // num1 is not undefined OR operator flag is true and num 2 is not zero
-            // change the display variable
-            let len = display1.length;
-            if(len>1){
-                if(num1<0 && len===2){  // negative single digit like : -5, when backspace clicked, should become 0 instead of removing 5 and leaving just "-"
-                    display1="0";
-                    num1=0;
-                    updateDisplay1();
+        // when the operator is given but the second number is not mentioned yet
+            if((display1==="0") || (operator_flag && num2===undefined)){}
+            else{  // num1 is not undefined OR operator flag is true and num 2 is not zero
+                // change the display variable
+                let len = display1.length;
+                if(len>1){
+                    if(num1<0 && len===2){  // negative single digit like : -5, when backspace clicked, should become 0 instead of removing 5 and leaving just "-"
+                        display1="0";
+                        num1=0;
+                        updateDisplay1();
+                    }
+                    else if(num2<0 && len===2){
+                        display1 = "0";
+                        num2=0;
+                        updateDisplay1();
+                    }
+                    else{
+                        display1 = display1.slice(0,len-1);
+                        updateDisplay1();
+                        // update num 1 and num2 accordingly
+                        if(operator_flag) num2 = +display1; 
+                        else num1 = +display1;
+                    }
                 }
-                else if(num2<0 && len===2){
+                else if(len===1){
                     display1 = "0";
-                    num2=0;
+                    if(operator_flag) num2 = 0; 
+                    else num1 = 0;
                     updateDisplay1();
                 }
-                else{
-                    display1 = display1.slice(0,len-1);
-                    updateDisplay1();
-                    // update num 1 and num2 accordingly
-                    if(operator_flag) num2 = +display1; 
-                    else num1 = +display1;
-                }
-            }
-            else if(len===1){
-                display1 = "0";
-                if(operator_flag) num2 = 0; 
-                else num1 = 0;
-                updateDisplay1();
-            }
+            }   
         }
     }
-
 }
 
 // function to clear everything
@@ -161,6 +174,7 @@ function clear(){
     secondDisplay.textContent = "";
     resultShowed=false;
     errorFlag = false;
+    veryLargeResult = false;
 }
 
 // function to update numbers, both num1 AND num2
