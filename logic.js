@@ -190,6 +190,7 @@ function updateOperator(op){
 // if prev operation produced no error, only then proceed
     if(!errorFlag && num1!==undefined){
         // trying to enter negative number as num1 and add irresponsiveness to other operators being pressed before num1
+        if(op==="*") op = "x"
         if(resultShowed){
             result = undefined;
             operator = op;
@@ -249,3 +250,25 @@ equalsTo.addEventListener('click',enterPressed);
 // add event listener to decimal
 
 
+// add keyboard support :
+document.addEventListener('keydown',(event)=>{
+    let key = event.key;
+    if(key==='Backspace'){
+        removeLast();
+    }
+    else if(key==="Escape"){
+        clear();
+    }
+    else if(key>="0" && key<="9"){
+        updateNumbers(key);
+    }
+    else if(["*","/","+","-"].includes(key)){
+        updateOperator(key);
+    }
+    else if(key==="Enter"){
+        enterPressed();
+    }
+    else if(key==="."){
+        // add callback fuction
+    }
+});
