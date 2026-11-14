@@ -38,11 +38,19 @@ function operation(first,second,op){
     // if after any operation, the output became too large,the trim it, because only the display1 string is trimmed, not the actual number stored in num1,2 or result
     let temp = `${result}`;
     if(temp.length>4 && result!=="ERROR"){
-        result = +result.toFixed(4);  // to fixed take number as i/p and returns a string
+        result = +result.toFixed(4);  // to fixed take number as i/p and returns a string after limiting the number of digit after decimal, the number before decimal stays as it is.
 // to fix only works on decimals, will not work on big numbers that don't have decimals, like 1988387185838, i need 'e' for them
     }
-    if(result==="ERROR") errorFlag = true;
+    else if(result==="ERROR") errorFlag = true;
 }
+
+
+// function to add exopnentiation to long numbers 
+function formatNumber(num){
+// if the absolute of number is bigger than 12 digits, then add exponent to string , limit decimal places to 5 digits only. if the absolute is less than 12, use it as it is
+    return (Math.abs(num)>1e11) ? num.toExponential(5) : String(num);
+}
+
 
 // -------- display -----------
 let firstDisplay = document.querySelector("#current_number");
@@ -60,11 +68,11 @@ function updateDisplay1(){
 // funciton to update display 2 also update num2
 function updateDisplay2(){
     if(num1!==undefined && !operator_flag){   // case 1- num1 entered and equal pressed
-        display2 = `${num1} =`;
+        display2 = `${formatNumber(num1)} =`;
     }
     else if(num1!==undefined && num2!==undefined && operator_flag){  // case 2 - num1,num2,operator all enetered, perform the operation and show me result
-        display2 = `${num1} ${operator} ${num2} = `;
-        display1 = `${result}`;
+        display2 = `${formatNumber(num1)} ${operator} ${formatNumber(num2)} = `;
+        display1 = `${formatNumber(result)}`;
         firstDisplay.textContent = display1;
         num2 = undefined;
         num1 = +result;
@@ -75,7 +83,7 @@ function updateDisplay2(){
     }
     else if(num1!==undefined && operator_flag){ // result is showed and now i clicked on anohter opertor to chain the operation using previous result
 // this has to come after the second case because if i put this before case 2 then case 2 will never execute  
-        display2 = `${num1} ${operator} `;   // case 3 num1 entered, operator selected and num2 is being given in input
+        display2 = `${formatNumber(num1)} ${operator} `;   // case 3 num1 entered, operator selected and num2 is being given in input
     }
     secondDisplay.textContent = display2;
 }
@@ -243,7 +251,7 @@ operatorList.forEach((currOperator)=>{
     });
 });
 
-// add event listener to = and enter button
+// add event listener to = button
 let equalsTo = document.querySelector("#equals_to");
 equalsTo.addEventListener('click',enterPressed);
 
@@ -266,6 +274,7 @@ document.addEventListener('keydown',(event)=>{
         updateOperator(key);
     }
     else if(key==="Enter"){
+        event.preventDefault();
         enterPressed();
     }
     else if(key==="."){
