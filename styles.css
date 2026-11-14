@@ -1,5 +1,7 @@
 body {
   font-family: "Share Tech Mono", monospace;
+  background-color: #0A0A0A;
+  /* background-color: #33312f; */
 }
 
 .decoy_body{
@@ -9,7 +11,7 @@ body {
 
 .calculator_body{
     box-sizing: border-box;
-    border: 2px solid black;
+    border: 2px solid #531111;
     /* color: burlywood; */
     width: 400px;
     border-radius: 12px;
@@ -17,6 +19,7 @@ body {
     margin-top: 40px;
     padding: 20px;
     font-family: "Share Tech Mono", monospace;
+    background-color: #4d4a45;
 }
 
 .display{
@@ -30,6 +33,8 @@ body {
     height: 130px;
     padding: 11.5px 15px;
     overflow: hidden;
+    background-color: #b7b4ae;
+    color: #33312f;
 }
 
 #current_number{
@@ -62,7 +67,10 @@ button{
     height: 59px;
     width: 170px;
     border-radius: 4px;
-    font-size: 24px;
+    font-size: 28px;
+    background-color: #726e68;
+    color: #cecac2;   
+    border: 2px solid #b7b4ae;
 }
 
 #delete{
@@ -89,6 +97,20 @@ button{
     flex-direction: column;
 }
 
+.number,
+#decimal,
+#equals_to{
+    /* background-color: #611414; */
+    background-color: #492424;
+    color: #b7b4ae;
+}
+
+.operator{
+    background-color: #33312f;
+    color: #9a9286;
+}
+
+
 .number_grid button{
     width: 79px;
     height: 63px;
@@ -103,6 +125,7 @@ button{
     font-size: 22.5px;
     font-weight: 600;
     justify-content: center;
+    color: #b7b4ae;
 }
 
 #copyright_symbol{
@@ -113,4 +136,5 @@ button{
 #githubLink{
     text-decoration: none;
     margin: 0px 6px;
+    color : #6e3737;
 }
