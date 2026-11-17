@@ -8,6 +8,8 @@ let result = undefined;
 let resultShowed = false;
 let errorFlag = false;
 let veryLargeResult = false;
+let decimalFlag_Num1 = false;
+let decimalFlag_Num2 = false;
 
 // addition
 function add(num_1,num_2){
@@ -175,6 +177,8 @@ function clear(){
     resultShowed=false;
     errorFlag = false;
     veryLargeResult = false;
+    decimalFlag_Num1 = false;
+    decimalFlag_Num2 = false;
 }
 
 // function to update numbers, both num1 AND num2
@@ -240,6 +244,46 @@ function updateOperator(op){
     }
 }
 
+// decimal function :
+function addDecimal(){
+    if(!decimalFlag_Num1 || !decimalFlag_Num2){
+// choose ki decimal assign hoga to konse variable m assign hoga  
+    // clear everything in case of error and if i press "." directly after the result has been showed.
+        if(resultShowed || errorFlag){
+            clear(); // previous decimal result is cleared
+            display1 = "0.";
+            num1 = +display1;
+            decimalFlag_Num1 = true;
+        }
+        // if the number has not been entered and i pressed decimal
+        else if(display1==="0" || display1===""){
+            display1 = "0.";
+            if(num1===undefined){
+                num1 = +display1;
+                decimalFlag_Num1 = true;
+            }
+            else if(num2===undefined){
+                num2 = +display1;
+                decimalFlag_Num2 = true;
+            }
+        }
+        // num1 is entered or not entered.
+        else if(operator === undefined && !decimalFlag_Num1){
+            decimalFlag_Num1 = true;
+            display1 = display1 + ".";
+            num1 = +display1;
+        }
+        // num1 and operator are selected 
+        else if(num1 && operator && !decimalFlag_Num2){
+            display1 = "0";
+            updateDisplay1();
+            decimalFlag_Num2 = true;
+            display1 = display1 + ".";
+            num2 = +display1; 
+        }
+        updateDisplay1();
+    } 
+}
 
 // select elements ------------------------------------------:
 // -------- clear and backspace ------------
@@ -270,7 +314,8 @@ let equalsTo = document.querySelector("#equals_to");
 equalsTo.addEventListener('click',enterPressed);
 
 // add event listener to decimal
-
+let decimal = document.querySelector("#decimal");
+decimal.addEventListener('click',addDecimal);
 
 // add keyboard support :
 document.addEventListener('keydown',(event)=>{
@@ -292,6 +337,6 @@ document.addEventListener('keydown',(event)=>{
         enterPressed();
     }
     else if(key==="."){
-        // add callback fuction
+        addDecimal();
     }
 });

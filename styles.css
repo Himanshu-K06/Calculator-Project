@@ -23,7 +23,7 @@ body {
 }
 
 .display{
-    border: 2px solid black;
+    border: 0.5px solid #171717;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -98,11 +98,15 @@ button{
 }
 
 .number,
-#decimal,
-#equals_to{
+#decimal{
     /* background-color: #611414; */
     background-color: #492424;
     color: #b7b4ae;
+}
+
+#equals_to{
+    color: #b7b4ae;
+    background-color: #171717;
 }
 
 .operator{
